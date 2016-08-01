@@ -1,0 +1,3 @@
+OSMParser
+==============
+Fetches OSM data and parses it into a set of graph edges
