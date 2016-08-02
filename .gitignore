@@ -2,6 +2,7 @@ __pycache__/
 
 
 # Distribution / packaging
+*.py[cod]
 .Python
 env/
 build/
