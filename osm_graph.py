@@ -69,9 +69,12 @@ class OSMGraph(object):
         self.ways = new_ways
 
 class OSMWay(object):
-    def __init__(self, id, nds=[]):
+    def __init__(self, id, nds=None):
         self.id = id
-        self.nds = nds
+        if (nds is None):
+            self.nds = []
+        else:
+            self.nds = nds
 
     def __str__(self):
         return str(self.__dict__)
@@ -81,6 +84,9 @@ class OSMWay(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __lt__(self, other):
+        return self.id < other.id
 
     # Take a way (which can have >= 2 nodes) and create 1 or more edges from it
     def split(self, degree_of_nodes):
