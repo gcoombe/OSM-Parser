@@ -1,14 +1,15 @@
 from math import radians, cos, sin, asin, sqrt
+import functools
 
 
 class Graph(object):
     def __init__(self, osm_graph):
         self.edges = []
-        # for way in osm_graph.ways:
-        #     for i in range(0, len(nodes)-1):
-        #         node_pairs = [(nodes[i], nodes[i + 1]) for i in len(nodes) - 1]
-        #         way_length = reduce(lambda total, node_pair: total + _calculate_distance_between_coordinates(node_pair[0], node_pair[1]), node_pairs)
-        #         self.edges.append(Edge(way.nds[0]))
+        for way in osm_graph.ways:
+            for i in range(0, len(way.nds)-1):
+                node_pairs = [(way.nds[i], way.nds[i + 1]) for i in len(way.nds) - 1]
+                way_length = functools.reduce(lambda total, node_pair: total + self._calculate_distance_between_coordinates(node_pair[0], node_pair[1]), node_pairs)
+                self.edges.append(Edge(way.nds[0], way.nds[-1], way_length))
 
     def _calculate_distance_between_coordinates(coordinate1, coordinate2):
         """
