@@ -10,8 +10,17 @@ Written with help from https://gist.github.com/aflaxman/287370
 
 
 class OSMGraph(object):
-    """docstring for Graph"""
-    def __init__(self, xml_map_data):
+
+    def __init__(self, ways=None, nodes=None):
+        if (ways is None):
+            ways = {}
+        if (nodes is None):
+            nodes = {}
+        self.ways = ways
+        self.nodes = nodes
+
+    @classmethod
+    def from_xml_data(cls, xml_map_data):
         ways = {}
         nodes = {}
 
@@ -50,9 +59,6 @@ class OSMGraph(object):
 
         xml.sax.parseString(xml_map_data, OSMHandler)
 
-        self.ways = ways
-        self.nodes = nodes
-
         degree_of_nodes = {}
         for way in ways.values():
             for node in way.nds:
@@ -62,11 +68,11 @@ class OSMGraph(object):
 
         # Ways now only have 2 nodes
         new_ways = {}
-        for id, way in self.ways.items():
+        for id, way in ways.items():
             split_ways = way.split(degree_of_nodes)
             for split_way in split_ways:
                 new_ways[split_way.id] = split_way
-        self.ways = new_ways
+        return cls(new_ways, nodes)
 
 class OSMWay(object):
     def __init__(self, id, nds=None):
