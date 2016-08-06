@@ -138,3 +138,6 @@ class OSMNode(object):
 
     def __lt__(self, other):
         return self.id < other.id
+
+    def get_coordinate(self):
+        return (self.lon, self.lat)

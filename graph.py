@@ -1,17 +1,22 @@
 from math import radians, cos, sin, asin, sqrt
-import functools
+from functools import reduce
 
 
 class Graph(object):
     def __init__(self, osm_graph):
         self.edges = []
-        for way in osm_graph.ways:
+        for id, way in osm_graph.ways.items():
             for i in range(0, len(way.nds)-1):
-                node_pairs = [(way.nds[i], way.nds[i + 1]) for i in len(way.nds) - 1]
-                way_length = functools.reduce(lambda total, node_pair: total + self._calculate_distance_between_coordinates(node_pair[0], node_pair[1]), node_pairs)
-                self.edges.append(Edge(way.nds[0], way.nds[-1], way_length))
+                node_pairs = [(way.nds[i], way.nds[i + 1]) for i in range(0, len(way.nds) - 1)]
+                way_length = reduce(
+                    lambda total, node_pair: total + calculate_distance_between_coordinates(node_pair[0].get_coordinate(), node_pair[1].get_coordinate()),
+                    node_pairs,
+                    0
+                )
+                self.edges.append(Edge(way.nds[0].id, way.nds[-1].id, way_length))
 
-    def _calculate_distance_between_coordinates(coordinate1, coordinate2):
+
+def calculate_distance_between_coordinates(coordinate1, coordinate2):
         """
         Calculate the great circle distance between two points
         on the earth (specified in decimal degrees) using the haversince formula.
@@ -30,8 +35,6 @@ class Graph(object):
         c = 2 * asin(sqrt(a))
         r = 6371 # Radius of earth in kilometers. Use 3956 for miles
         return c * r
-
-
 
 class Edge(object):
     def __init__(self, head, tail, weight):
