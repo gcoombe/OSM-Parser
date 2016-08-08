@@ -14,7 +14,10 @@ class Graph(object):
                     0
                 )
                 self.edges.append(Edge(way.nds[0].id, way.nds[-1].id, way_length))
-
+    def to_list(self):
+        result = []
+        for edge in self.edges:
+            result.push((edge.head, edge.tail, edge.weight))
 
 def calculate_distance_between_coordinates(coordinate1, coordinate2):
         """
