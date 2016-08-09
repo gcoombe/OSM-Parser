@@ -17,7 +17,8 @@ class Graph(object):
     def to_list(self):
         result = []
         for edge in self.edges:
-            result.push((edge.head, edge.tail, edge.weight))
+            result.append((edge.head, edge.tail, edge.weight))
+        return result
 
 def calculate_distance_between_coordinates(coordinate1, coordinate2):
         """
