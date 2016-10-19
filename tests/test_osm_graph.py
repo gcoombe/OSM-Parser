@@ -1,6 +1,6 @@
 import unittest
 
-from osm_graph import OSMGraph, OSMWay, OSMNode
+from osmparser.osm_graph import OSMGraph, OSMWay, OSMNode
 
 
 class TestOSMGraph(unittest.TestCase):
