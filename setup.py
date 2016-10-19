@@ -1,9 +1,10 @@
 from setuptools import setup
 
-version = "0.1.0"
+version = "0.2.0"
 
 setup(
-    name='OSMParser',
+    name='osmparser',
+    packages= ['osmparser'],
     version=version,
     author='Graham Coombe',
     author_email='gscoombe@gmail.com',

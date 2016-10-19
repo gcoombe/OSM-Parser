@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import fetcher
+from osmparser import fetcher
 
 def main():
     response = fetcher.fetch_bounded_box_map(-123.231508, 49.257094, -123.196980, 49.25777)

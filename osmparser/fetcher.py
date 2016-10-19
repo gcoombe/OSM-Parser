@@ -16,7 +16,6 @@ def fetch_bounded_box_map(left, bottom, right, top):
     bounding_box = ','.join(map(str, (left, bottom, right, top)))
     return _request("GET", OSM_BASE_URL + '/api/0.6/map', params={'bbox': bounding_box})
 
-
 def _request(method, url, params=None, data=None, timeout=60):
     """
     :param method: String, 'get', 'post', etc.
