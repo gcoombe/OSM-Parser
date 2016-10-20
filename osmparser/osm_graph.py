@@ -10,7 +10,6 @@ Written with help from https://gist.github.com/aflaxman/287370
 
 
 class OSMGraph(object):
-
     def __init__(self, ways=None, nodes=None):
         if (ways is None):
             ways = {}
@@ -72,7 +71,21 @@ class OSMGraph(object):
             split_ways = way.split(degree_of_nodes)
             for split_way in split_ways:
                 new_ways[split_way.id] = split_way
+
         return cls(new_ways, nodes)
+
+    # Populate node objects on ways
+    def get_ways_with_nodes(self):
+        ways_with_nodes = [];
+        for id, way in self.ways.items():
+            new_way = OSMWay(way.id, way.nds)
+            new_way.nodes = [];
+            for node_id in new_way.nds:
+                new_way.nodes.append(self.nodes[node_id])
+            ways_with_nodes.append(new_way)
+        return ways_with_nodes
+
+
 
 class OSMWay(object):
     def __init__(self, id, nds=None):

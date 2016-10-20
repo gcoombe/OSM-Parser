@@ -74,3 +74,13 @@ class TestOSMGraph(unittest.TestCase):
         self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
         self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
 
+    def test_get_ways_with_nodes(self):
+      nodes = [OSMNode(1, 49.278653, -123.121905), OSMNode(2, 49.285309, -123.111949)]
+      o_graph = OSMGraph({3: OSMWay(3, [nodes[0].id, nodes[1].id])}, {1: nodes[0], 2: nodes[1]})
+      ways_with_nodes = o_graph.get_ways_with_nodes()
+
+      expected_way = OSMWay(3, [nodes[0].id, nodes[1].id])
+      expected_way.nodes = [nodes[0], nodes[1]]
+
+      self.assertEqual(ways_with_nodes, [expected_way])
+
