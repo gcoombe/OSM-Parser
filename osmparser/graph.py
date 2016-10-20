@@ -3,9 +3,20 @@ from functools import reduce
 
 
 class Graph(object):
-    def __init__(self, osm_graph):
-        self.edges = []
-        self.nodes = {}
+
+    def __init__(self, nodes=None, edges=None):
+        if (nodes is None):
+            nodes = {}
+        if (edges is None):
+            edges = {}
+        self.nodes = nodes
+        self.edges = edges
+
+
+    @classmethod
+    def from_osm_graph(cls, osm_graph):
+        edges = []
+        nodes = {}
         for id, way in osm_graph.ways.items():
             for i in range(0, len(way.nds)-1):
                 node_pairs = [(way.nds[i], way.nds[i + 1]) for i in range(0, len(way.nds) - 1)]
@@ -14,9 +25,12 @@ class Graph(object):
                     node_pairs,
                     0
                 )
-                self.edges.append(Edge(way.nds[0].id, way.nds[-1].id, way_length))
+                edges.append(Edge(way.nds[0].id, way.nds[-1].id, way_length))
         for id, osm_node in osm_graph.nodes.items():
-            self.nodes[id] = Node(osm_node.lat, osm_node.lon)
+            nodes[id] = Node(osm_node.lat, osm_node.lon)
+        return cls(nodes, edges)
+
+
 
     def edge_list(self):
         result = []

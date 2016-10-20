@@ -19,8 +19,10 @@ def fetch_bounded_box_map(left, bottom, right, top):
     return _request("GET", OSM_BASE_URL + '/api/0.6/map', params={'bbox': bounding_box})
 
 def fetch_bounded_box_graph(left, bottom, right, top):
-    osm_graph = osm_graph.from_xml_data(fetch_bounded_box_map(lefy, bottom, right, top))
-    return Graph(osm_graph)
+    fetch_reponse = fetch_bounded_box_map(left, bottom, right, top)
+    print(fetch_reponse.text)
+    osm_graph = OSMGraph.from_xml_data(fetch_reponse.text)
+    return Graph.from_osm_graph(osm_graph)
 
 def _request(method, url, params=None, data=None, timeout=60):
     """
@@ -31,6 +33,7 @@ def _request(method, url, params=None, data=None, timeout=60):
     :return: response object
     """
 
+    print(params)
     auth = HTTPBasicAuth(os.getenv('OSM_USER_NAME', ''), os.getenv('OSM_PASSWORD', ''))
 
     try:
