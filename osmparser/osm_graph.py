@@ -40,7 +40,7 @@ class OSMGraph(object):
             @classmethod
             def startElement(self, name, attrs):
                 if name == 'node':
-                    self.currElem = OSMNode(attrs['id'], float(attrs['lon']), float(attrs['lat']))
+                    self.currElem = OSMNode(attrs['id'], float(attrs['lat']), float(attrs['lon']))
                 elif name == 'way':
                     self.currElem = OSMWay(attrs['id'])
                 elif name == 'nd':
@@ -122,7 +122,7 @@ class OSMWay(object):
 
 
 class OSMNode(object):
-    def __init__(self, id, lon, lat):
+    def __init__(self, id, lat, lon):
         self.id = id
         self.lon = lon
         self.lat = lat

@@ -20,7 +20,7 @@ class TestOSMGraph(unittest.TestCase):
 
         graph = OSMGraph.from_xml_data(xml_string)
         expected_ways = [OSMWay("199838-0", ["5900058", "5900341"])]
-        expected_nodes = [OSMNode("5900058", -123.1242, 49.2759,), OSMNode("5900341", -123.1231, 49.2766)]
+        expected_nodes = [OSMNode("5900058", 49.2759, -123.1242), OSMNode("5900341", 49.2766, -123.1231)]
 
         self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
         self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
@@ -42,7 +42,7 @@ class TestOSMGraph(unittest.TestCase):
 
         graph = OSMGraph.from_xml_data(xml_string)
         expected_ways = [OSMWay("201058-0", ["5902860", "5899705", "5902472"])]
-        expected_nodes = [OSMNode("5902860", -123.1242, 49.2759,), OSMNode("5899705", -123.1231, 49.2766), OSMNode("5902472", -123.1258, 49.2748)]
+        expected_nodes = [OSMNode("5902860", 49.2759, -123.1242), OSMNode("5899705", 49.2766, -123.1231), OSMNode("5902472", 49.2748, -123.1258)]
 
         self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
         self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
@@ -69,7 +69,7 @@ class TestOSMGraph(unittest.TestCase):
 
         graph = OSMGraph.from_xml_data(xml_string)
         expected_ways = [OSMWay("201058-0", ["5902860", "5899705"]), OSMWay("201058-1", ["5899705", "5902472"]), OSMWay("301878980-0", ["5899705", "553185065"])]
-        expected_nodes = [OSMNode("5902860", -123.1242, 49.2759,), OSMNode("5899705", -123.1231, 49.2766), OSMNode("5902472", -123.1258, 49.2748), OSMNode("553185065", -123.1267388, 49.2775075)]
+        expected_nodes = [OSMNode("5902860", 49.2759, -123.1242), OSMNode("5899705", 49.2766, -123.1231), OSMNode("5902472", 49.2748, -123.1258), OSMNode("553185065", 49.2775075, -123.1267388)]
 
         self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
         self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
