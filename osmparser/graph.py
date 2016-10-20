@@ -5,6 +5,7 @@ from functools import reduce
 class Graph(object):
     def __init__(self, osm_graph):
         self.edges = []
+        self.nodes = {}
         for id, way in osm_graph.ways.items():
             for i in range(0, len(way.nds)-1):
                 node_pairs = [(way.nds[i], way.nds[i + 1]) for i in range(0, len(way.nds) - 1)]
@@ -14,10 +15,19 @@ class Graph(object):
                     0
                 )
                 self.edges.append(Edge(way.nds[0].id, way.nds[-1].id, way_length))
-    def to_list(self):
+        for id, osm_node in osm_graph.nodes.items():
+            self.nodes[id] = Node(osm_node.lat, osm_node.lon)
+
+    def edge_list(self):
         result = []
         for edge in self.edges:
             result.append((edge.head, edge.tail, edge.weight))
+        return result
+
+    def node_list(self):
+        result = []
+        for id, node in self.nodes.items():
+            result.append((node.lat, node.lon))
         return result
 
 def calculate_distance_between_coordinates(coordinate1, coordinate2):
@@ -45,3 +55,8 @@ class Edge(object):
         self.head = head  # Start node
         self.tail = tail  # End node
         self.weight = weight  # Cost
+
+class Node(object):
+    def __init__(self, lat, lon):
+        self.lat = lat
+        self.lon = lon
