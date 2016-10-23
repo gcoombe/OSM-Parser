@@ -8,7 +8,7 @@ class Graph(object):
         if (nodes is None):
             nodes = {}
         if (edges is None):
-            edges = {}
+            edges = []
         self.nodes = nodes
         self.edges = edges
 
