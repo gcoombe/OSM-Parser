@@ -58,8 +58,23 @@ class OSMGraph(object):
 
         xml.sax.parseString(xml_map_data, OSMHandler)
 
+        return cls._split_ways(ways.values(), nodes)
+
+    @classmethod
+    def from_overpy_result(cls, overpy_result):
+        ways =  []
+        nodes = {}
+        for node in overpy_result.get_nodes():
+            nodes[node.id] = OSMNode(node.id, node.lat, node.lon)
+        for way in overpy_result.get_ways():
+            ways.append(OSMWay(way.id, list(map(lambda node: node.id, way.get_nodes()))))
+        return cls._split_ways(ways, nodes);
+
+
+    @classmethod
+    def _split_ways(cls, ways, nodes):
         degree_of_nodes = {}
-        for way in ways.values():
+        for way in ways:
             for node in way.nds:
                 if(node not in degree_of_nodes):
                     degree_of_nodes[node] = 0
@@ -67,7 +82,7 @@ class OSMGraph(object):
 
         # Ways now only have 2 nodes
         new_ways = {}
-        for id, way in ways.items():
+        for way in ways:
             split_ways = way.split(degree_of_nodes)
             for split_way in split_ways:
                 new_ways[split_way.id] = split_way
@@ -94,6 +109,9 @@ class OSMWay(object):
             self.nds = []
         else:
             self.nds = nds
+
+    def __repr__(self):
+        return "OSMWay({})".format(self.__dict__)
 
     def __str__(self):
         return str(self.__dict__)
@@ -139,6 +157,9 @@ class OSMNode(object):
         self.id = id
         self.lon = lon
         self.lat = lat
+
+    def __repr__(self):
+        return "OSMNode({})".format(self.__dict__)
 
     def __str__(self):
         return str(self.__dict__)

@@ -9,6 +9,7 @@ setup(
     author='Graham Coombe',
     author_email='gscoombe@gmail.com',
     install_requires=[
+        "overpy==0.3.1",
         "requests==2.10.0"
     ]
 )

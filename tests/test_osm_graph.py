@@ -1,6 +1,7 @@
 import unittest
 
 from osmparser.osm_graph import OSMGraph, OSMWay, OSMNode
+from overpy import Node, Way, Result
 
 
 class TestOSMGraph(unittest.TestCase):
@@ -83,4 +84,18 @@ class TestOSMGraph(unittest.TestCase):
       expected_way.nodes = [nodes[0], nodes[1]]
 
       self.assertEqual(ways_with_nodes, [expected_way])
+
+    def test_from_overpass_api(self):
+      result = Result()
+      nodes = [Node("5902860", 49.2759, -123.1242, result=result), Node("5899705", 49.2766, -123.1231, result=result), Node("5902472", 49.2748, -123.1258, result=result), Node("553185065", 49.2775075, -123.1267388, result=result)]
+      ways = [Way("201058", ["5902860", "5899705", "5902472"], result=result), Way("301878980", ["5899705","553185065"], result=result)]
+      for element in nodes + ways:
+        result.append(element)
+      graph = OSMGraph.from_overpy_result(result)
+
+      expected_ways = [OSMWay("201058-0", ["5902860", "5899705"]), OSMWay("201058-1", ["5899705", "5902472"]), OSMWay("301878980-0", ["5899705", "553185065"])]
+      expected_nodes = [OSMNode("5902860", 49.2759, -123.1242), OSMNode("5899705", 49.2766, -123.1231), OSMNode("5902472", 49.2748, -123.1258), OSMNode("553185065", 49.2775075, -123.1267388)]
+
+      self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
+      self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
 
