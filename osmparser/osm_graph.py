@@ -67,7 +67,14 @@ class OSMGraph(object):
         for node in overpy_result.get_nodes():
             nodes[node.id] = OSMNode(node.id, node.lat, node.lon)
         for way in overpy_result.get_ways():
-            ways.append(OSMWay(way.id, list(map(lambda node: node.id, way.get_nodes()))))
+            """
+                Overpass always gives you the whole way including nodes outside the box.
+                Therefore we need to fileter out any references to nodes that were not returned
+                and thus we know are not in the box
+            """
+            all_nodes = way.get_nodes(resolve_missing=True)
+            nodes_in_box = list(filter(lambda node: node.id in nodes, all_nodes))
+            ways.append(OSMWay(way.id, list(map(lambda node: node.id, nodes_in_box))))
         return cls._split_ways(ways, nodes);
 
 
@@ -144,7 +151,7 @@ class OSMWay(object):
         counter = 0
         for slice in slices:
             sliced_way = copy.copy(self)
-            sliced_way.id += "-%d" % counter
+            sliced_way.id = str(sliced_way.id) + ("-%d" % counter)
             sliced_way.nds = slice
             ret.append(sliced_way)
             counter += 1
