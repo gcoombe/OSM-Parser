@@ -12,7 +12,7 @@ import overpy
 
 from requests.auth import HTTPBasicAuth
 
-OSM_BASE_URL = 'http://overpass_api06.dev.openstreetmap.org/'
+OSM_BASE_URL = 'http://api06.dev.openstreetmap.org/'
 
 OVERPASS_QUERY_TEMPLATE = """way[highway!=service][!building]({0})->.w;
     node({0})->.n;
@@ -27,7 +27,7 @@ overpass_api = overpy.Overpass()
 
 def fetch_bounded_box_map(left, bottom, right, top):
     bounding_box = ','.join(map(str, (left, bottom, right, top)))
-    return _request("GET", OSM_BASE_URL + '/overpass_api/0.6/map', params={'bbox': bounding_box})
+    return _request("GET", OSM_BASE_URL + '/api/0.6/map', params={'bbox': bounding_box})
 
 def fetch_bounded_box_graph(left, bottom, right, top):
     fetch_reponse = fetch_bounded_box_map(left, bottom, right, top)
