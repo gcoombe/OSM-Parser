@@ -1,5 +1,6 @@
 import xml.sax
 import copy
+from decimal import Decimal
 
 """
 Convert xml map data returned from OSM and parse into a set of OSM nodes and ways.
@@ -39,7 +40,7 @@ class OSMGraph(object):
             @classmethod
             def startElement(self, name, attrs):
                 if name == 'node':
-                    self.currElem = OSMNode(attrs['id'], float(attrs['lat']), float(attrs['lon']))
+                    self.currElem = OSMNode(attrs['id'], Decimal(attrs['lat']), Decimal(attrs['lon']))
                 elif name == 'way':
                     self.currElem = OSMWay(attrs['id'])
                 elif name == 'nd':
