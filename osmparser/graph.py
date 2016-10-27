@@ -25,7 +25,7 @@ class Graph(object):
                     node_pairs,
                     0
                 )
-                edges.append(Edge(way.nodes[0].id, way.nodes[-1].id, way_length))
+                edges.append(Edge(way.nodes, way_length, way.id, way.tags))
         for id, osm_node in osm_graph.nodes.items():
             nodes[id] = Node(osm_node.lat, osm_node.lon)
         return cls(nodes, edges)
@@ -65,10 +65,20 @@ def calculate_distance_between_coordinates(coordinate1, coordinate2):
         return c * r
 
 class Edge(object):
-    def __init__(self, head, tail, weight):
-        self.head = head  # Start node
-        self.tail = tail  # End node
+    def __init__(self, nodes, weight, way_id, tags):
+        self.nodes = nodes
         self.weight = weight  # Cost
+        self.way_id = way_id
+        self.tags = tags
+
+    @property
+    def head(self):
+        return self.nodes[0].id
+
+    @property
+    def tail(self):
+        return self.nodes[-1].id
+
 
 class Node(object):
     def __init__(self, lat, lon):
