@@ -2,7 +2,16 @@ import unittest
 
 from osmparser.osm_graph import OSMGraph, OSMWay, OSMNode
 from overpy import Node, Way, Result
+from decimal import Decimal
 
+def _nodes_equal(assertEqual, expected, received):
+  assertEqual(len(expected), len(received))
+  expected = sorted(expected)
+  received = sorted(received)
+  for i in range(len(expected)):
+    assertEqual(expected[i].id, received[i].id)
+    assertEqual(float(expected[i].lat), float(received[i].lat))
+    assertEqual(float(expected[i].lon), float(received[i].lon))
 
 class TestOSMGraph(unittest.TestCase):
 
@@ -24,7 +33,7 @@ class TestOSMGraph(unittest.TestCase):
         expected_nodes = [OSMNode("5900058", 49.2759, -123.1242), OSMNode("5900341", 49.2766, -123.1231)]
 
         self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
-        self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
+        _nodes_equal(self.assertEqual, expected_nodes, graph.nodes.values())
 
     def test_ways_with_multi_nodes_arent_split_if_no_interestctions(self):
         xml_string = """<?xml version="1.0" encoding="UTF-8"?>
@@ -46,7 +55,8 @@ class TestOSMGraph(unittest.TestCase):
         expected_nodes = [OSMNode("5902860", 49.2759, -123.1242), OSMNode("5899705", 49.2766, -123.1231), OSMNode("5902472", 49.2748, -123.1258)]
 
         self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
-        self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
+        _nodes_equal(self.assertEqual, expected_nodes, graph.nodes.values())
+
 
     def test_split_way_if_multi_node_through_intersection(self):
         xml_string = """<?xml version="1.0" encoding="UTF-8"?>
@@ -73,7 +83,7 @@ class TestOSMGraph(unittest.TestCase):
         expected_nodes = [OSMNode("5902860", 49.2759, -123.1242), OSMNode("5899705", 49.2766, -123.1231), OSMNode("5902472", 49.2748, -123.1258), OSMNode("553185065", 49.2775075, -123.1267388)]
 
         self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
-        self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
+        _nodes_equal(self.assertEqual, expected_nodes, graph.nodes.values())
 
     def test_get_ways_with_nodes(self):
       nodes = [OSMNode(1, 49.278653, -123.121905), OSMNode(2, 49.285309, -123.111949)]
@@ -98,4 +108,3 @@ class TestOSMGraph(unittest.TestCase):
 
       self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
       self.assertEqual(sorted(list(graph.nodes.values())), sorted(expected_nodes))
-
