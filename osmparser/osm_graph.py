@@ -77,7 +77,7 @@ class OSMGraph(object):
             """
             all_nodes = way.get_nodes(resolve_missing=True)
             nodes_in_box = list(filter(lambda node: node.id in nodes, all_nodes))
-            ways.append(OSMWay(way.id, list(map(lambda node: node.id, nodes_in_box))))
+            ways.append(OSMWay(way.id, list(map(lambda node: node.id, nodes_in_box)), way.tags))
         return cls._split_ways(ways, nodes);
 
 
