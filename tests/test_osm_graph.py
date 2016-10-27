@@ -85,6 +85,24 @@ class TestOSMGraph(unittest.TestCase):
         self.assertEqual(sorted(list(graph.ways.values())), sorted(expected_ways))
         _nodes_equal(self.assertEqual, expected_nodes, graph.nodes.values())
 
+    def test_parse_way_tags(self):
+      xml_string = """<?xml version="1.0" encoding="UTF-8"?>
+          <osm version="0.6" generator="OpenStreetMap server" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+            <bounds minlat="49.2756" minlon="-123.12518" maxlat="49.277574" maxlon="-123.122176"/>
+            <node id="5900058" changeset="8212" timestamp="2011-02-03T00:45:17Z" version="1" visible="true" user="rus" uid="96" lat="49.2759" lon="-123.1242"/>
+            <node id="5900341" changeset="8212" timestamp="2011-02-03T00:45:26Z" version="1" visible="true" user="rus" uid="96" lat="49.2766" lon="-123.1231"/>
+            <way id="199838">
+              <nd ref="5900058"/>
+              <nd ref="5900341"/>
+              <tag k="highway" v="residential"/>
+            </way>
+          </osm>
+          """
+
+      graph = OSMGraph.from_xml_data(xml_string)
+
+      self.assertEqual(graph.ways["199838-0"].tags, {"highway": "residential"})
+
     def test_get_ways_with_nodes(self):
       nodes = [OSMNode(1, 49.278653, -123.121905), OSMNode(2, 49.285309, -123.111949)]
       o_graph = OSMGraph({3: OSMWay(3, [nodes[0].id, nodes[1].id])}, {1: nodes[0], 2: nodes[1]})

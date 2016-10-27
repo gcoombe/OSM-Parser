@@ -45,6 +45,8 @@ class OSMGraph(object):
                     self.currElem = OSMWay(attrs['id'])
                 elif name == 'nd':
                     self.currElem.nds.append(attrs['ref'])
+                elif name == 'tag' and isinstance(self.currElem, OSMWay):
+                    self.currElem.tags[attrs["k"]] = attrs["v"]
 
             @classmethod
             def endElement(self, name):
@@ -111,12 +113,17 @@ class OSMGraph(object):
 
 
 class OSMWay(object):
-    def __init__(self, id, nds=None):
+    def __init__(self, id, nds=None, tags=None):
         self.id = id
         if (nds is None):
             self.nds = []
         else:
             self.nds = nds
+        if tags is None:
+            self.tags = {}
+        else:
+            self.tags = tags
+
 
     def __repr__(self):
         return "OSMWay({})".format(self.__dict__)
@@ -165,6 +172,7 @@ class OSMNode(object):
         self.id = id
         self.lon = lon
         self.lat = lat
+        self.tags = {}
 
     def __repr__(self):
         return "OSMNode({})".format(self.__dict__)
