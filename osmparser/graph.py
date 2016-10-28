@@ -73,6 +73,9 @@ class Edge(object):
             tags = {}
         self.tags = tags
 
+    def __repr__(self):
+        return "EDGE({})".format(self.__dict__)
+
     @property
     def head(self):
         return self.nodes[0].id
@@ -84,9 +87,11 @@ class Edge(object):
     def contains_lat_long(self, lat, lng):
         return any(map(lambda node: node.lat == lat and node.lon == lng, self.nodes))
 
-
 class Node(object):
     def __init__(self, id, lat, lon):
         self.id = id
         self.lat = lat
         self.lon = lon
+
+    def __repr__(self):
+        return "Node({})".format(self.__dict__)
