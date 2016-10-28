@@ -89,7 +89,10 @@ class Edge(object):
 
     def contains_sement(self, coord1, coord2):
         def match(node_pair, coord1, coord2):
-            return node_pair[0].lat == coord1["lat"] and node_pair[0].lon == coord1["lon"] and node_pair[1].lat == coord2["lat"] and node_pair[1].lon == coord2["lon"]
+            def pair_coord_match(pair, coord):
+                return pair.lat == coord["lat"] and pair.lon == coord["lon"]
+
+            return (pair_coord_match(node_pair[0], coord1) and pair_coord_match(node_pair[1], coord2)) or (pair_coord_match(node_pair[1], coord1) and pair_coord_match(node_pair[0], coord2))
 
         node_pairs = [(self.nodes[i], self.nodes[i + 1]) for i in range(0, len(self.nodes) - 1)]
         return next((True for pair in node_pairs if match(pair, coord1, coord2)), False)
