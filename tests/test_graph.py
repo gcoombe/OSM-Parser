@@ -59,3 +59,18 @@ class TestOSMGraph(unittest.TestCase):
         nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949)]
         edge =  Edge(1, nodes, 1)
         self.assertFalse(edge.contains_lat_long(60, -121))
+
+    def test_edge_has_segment(self):
+        nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949)]
+        edge =  Edge(1, nodes, 1)
+        self.assertTrue(edge.contains_sement({"lat": nodes[0].lat, "lon": nodes[0].lon}, {"lat": nodes[1].lat, "lon": nodes[1].lon}))
+
+    def test_edge_doesnt_have_segment(self):
+        nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949)]
+        edge =  Edge(1, nodes, 1)
+        self.assertFalse(edge.contains_sement({"lat": 50, "lon": -100}, {"lat": nodes[1].lat, "lon": nodes[1].lon}))
+
+    def test_edge_coords_not_adjacent(self):
+        nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949), Node(3, 50.1, -124.1)]
+        edge =  Edge(1, nodes, 1)
+        self.assertFalse(edge.contains_sement({"lat": nodes[0].lat, "lon": nodes[0].lon}, {"lat": nodes[2].lat, "lon": nodes[2].lon}))

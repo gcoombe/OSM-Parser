@@ -87,6 +87,13 @@ class Edge(object):
     def contains_lat_long(self, lat, lng):
         return any(map(lambda node: node.lat == lat and node.lon == lng, self.nodes))
 
+    def contains_sement(self, coord1, coord2):
+        def match(node_pair, coord1, coord2):
+            return node_pair[0].lat == coord1["lat"] and node_pair[0].lon == coord1["lon"] and node_pair[1].lat == coord2["lat"] and node_pair[1].lon == coord2["lon"]
+
+        node_pairs = [(self.nodes[i], self.nodes[i + 1]) for i in range(0, len(self.nodes) - 1)]
+        return next((True for pair in node_pairs if match(pair, coord1, coord2)), False)
+
 class Node(object):
     def __init__(self, id, lat, lon):
         self.id = id
