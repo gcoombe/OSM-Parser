@@ -82,7 +82,7 @@ class Edge(object):
         return self.nodes[-1].id
 
     def contains_lat_long(self, lat, lng):
-        return any(map(lambda node: node.lat == lat and node.lng == lng, self.nodes))
+        return any(map(lambda node: node.lat == lat and node.lon == lng, self.nodes))
 
 
 class Node(object):

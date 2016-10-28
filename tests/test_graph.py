@@ -1,6 +1,6 @@
 import unittest
 
-from osmparser.graph import Graph, Edge, calculate_distance_between_coordinates
+from osmparser.graph import Graph, Edge, Node, calculate_distance_between_coordinates
 from osmparser.osm_graph import OSMGraph, OSMWay, OSMNode
 
 
@@ -49,3 +49,13 @@ class TestOSMGraph(unittest.TestCase):
         self.assertEqual(nodes_list[0][0], 49.278653)
         self.assertEqual(nodes_list[1][1], -123.111949)
         self.assertEqual(nodes_list[1][0], 49.285309)
+
+    def test_edge_contains_lat_lng(self):
+        nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949)]
+        edge =  Edge(1, nodes, 1)
+        self.assertTrue(edge.contains_lat_long(49.278653, -123.121905))
+
+    def test_edge_not_contains_lat_lng(self):
+        nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949)]
+        edge =  Edge(1, nodes, 1)
+        self.assertFalse(edge.contains_lat_long(60, -121))
