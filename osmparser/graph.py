@@ -65,10 +65,12 @@ def calculate_distance_between_coordinates(coordinate1, coordinate2):
         return c * r
 
 class Edge(object):
-    def __init__(self, nodes, weight, way_id, tags):
+    def __init__(self, nodes, weight, way_id, tags=None):
         self.nodes = nodes
         self.weight = weight  # Cost
         self.way_id = way_id
+        if tags is None:
+            tags = {}
         self.tags = tags
 
     @property
@@ -78,6 +80,9 @@ class Edge(object):
     @property
     def tail(self):
         return self.nodes[-1].id
+
+    def contains_lat_long(self, lat, lng):
+        return any(map(lambda node: node.lat == lat and node.lng == lng, self.nodes))
 
 
 class Node(object):
