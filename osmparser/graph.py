@@ -87,7 +87,7 @@ class Edge(object):
     def contains_lat_long(self, lat, lng):
         return any(map(lambda node: node.lat == lat and node.lon == lng, self.nodes))
 
-    def contains_sement(self, coord1, coord2):
+    def contains_segment(self, coord1, coord2):
         def match(node_pair, coord1, coord2):
             def pair_coord_match(pair, coord):
                 return pair.lat == coord["lat"] and pair.lon == coord["lon"]
