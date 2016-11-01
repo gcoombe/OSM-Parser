@@ -103,7 +103,7 @@ class OSMGraph(object):
     def get_ways_with_nodes(self):
         ways_with_nodes = [];
         for id, way in self.ways.items():
-            new_way = OSMWay(way.id, way.nds)
+            new_way = OSMWay(way.id, way.nds, way.tags)
             new_way.nodes = [];
             for node_id in new_way.nds:
                 new_way.nodes.append(self.nodes[node_id])
@@ -123,7 +123,6 @@ class OSMWay(object):
             self.tags = {}
         else:
             self.tags = tags
-
 
     def __repr__(self):
         return "OSMWay({})".format(self.__dict__)

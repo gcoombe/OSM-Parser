@@ -87,15 +87,18 @@ class Edge(object):
     def contains_lat_long(self, lat, lng):
         return any(map(lambda node: node.lat == lat and node.lon == lng, self.nodes))
 
-    def contains_segment(self, coord1, coord2):
+    def contains_segment(self, coord1, coord2, head_to_tail=False):
         def match(node_pair, coord1, coord2):
             def pair_coord_match(pair, coord):
                 return pair.lat == coord["lat"] and pair.lon == coord["lon"]
 
             return (pair_coord_match(node_pair[0], coord1) and pair_coord_match(node_pair[1], coord2)) or (pair_coord_match(node_pair[1], coord1) and pair_coord_match(node_pair[0], coord2))
 
-        node_pairs = [(self.nodes[i], self.nodes[i + 1]) for i in range(0, len(self.nodes) - 1)]
-        return next((True for pair in node_pairs if match(pair, coord1, coord2)), False)
+        if (head_to_tail == False):
+            node_pairs = [(self.nodes[i], self.nodes[i + 1]) for i in range(0, len(self.nodes) - 1)]
+            return next((True for pair in node_pairs if match(pair, coord1, coord2)), False)
+        else:
+            return match([self.nodes[0], self.nodes[-1]], coord1, coord2)
 
 class Node(object):
     def __init__(self, id, lat, lon):

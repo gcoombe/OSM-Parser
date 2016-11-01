@@ -79,3 +79,8 @@ class TestOSMGraph(unittest.TestCase):
         nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949), Node(3, 50.1, -124.1)]
         edge =  Edge(1, nodes, 1)
         self.assertFalse(edge.contains_segment({"lat": nodes[0].lat, "lon": nodes[0].lon}, {"lat": nodes[2].lat, "lon": nodes[2].lon}))
+
+    def test_edge_coords_head_tail(self):
+        nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949), Node(3, 50.1, -124.1)]
+        edge =  Edge(1, nodes, 1)
+        self.assertTrue(edge.contains_segment({"lat": nodes[0].lat, "lon": nodes[0].lon}, {"lat": nodes[2].lat, "lon": nodes[2].lon}, head_to_tail=True))
