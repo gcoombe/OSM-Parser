@@ -20,6 +20,15 @@ class TestOSMGraph(unittest.TestCase):
         self.assertEqual(graph.edges[0].tail, 2)
         self.assertAlmostEqual(graph.edges[0].weight, 1.034, 3)
 
+    def test_calculates_graph_with_multi_node_edges(self):
+        nodes = [OSMNode(1, 49.278653, -123.121905), OSMNode(2, 49.285309, -123.111949), OSMNode(3, 49.285309, -123.121949)]
+        o_graph = OSMGraph({3: OSMWay(3, [nodes[0].id, nodes[1].id, nodes[2].id])}, {1: nodes[0], 2: nodes[1], 3: nodes[2]})
+        graph = Graph.from_osm_graph(o_graph)
+        self.assertEqual(len(graph.edges), 1)
+        self.assertEqual(graph.edges[0].head, 1)
+        self.assertEqual(graph.edges[0].tail, 3)
+        self.assertAlmostEqual(graph.edges[0].weight, 1.7593, 3)
+
     def test_calculates_graph_with_many_node_ways(self):
         nodes = [OSMNode(1, 49.278653, -123.121905), OSMNode(2, 49.285309, -123.111949)]
         o_graph = OSMGraph({3: OSMWay(3, [nodes[0].id, nodes[1].id])}, {1: nodes[0], 2: nodes[1]})

@@ -18,14 +18,13 @@ class Graph(object):
         edges = []
         nodes = {}
         for way in osm_graph.get_ways_with_nodes():
-            for i in range(0, len(way.nodes)-1):
-                node_pairs = [(way.nodes[i], way.nodes[i + 1]) for i in range(0, len(way.nodes) - 1)]
-                way_length = reduce(
-                    lambda total, node_pair: total + calculate_distance_between_coordinates(node_pair[0].get_coordinate(), node_pair[1].get_coordinate()),
-                    node_pairs,
-                    0
-                )
-                edges.append(Edge(way.id, way.nodes, way_length, way.tags))
+            node_pairs = [(way.nodes[i], way.nodes[i + 1]) for i in range(0, len(way.nodes) - 1)]
+            way_length = reduce(
+                lambda total, node_pair: total + calculate_distance_between_coordinates(node_pair[0].get_coordinate(), node_pair[1].get_coordinate()),
+                node_pairs,
+                0
+            )
+            edges.append(Edge(way.id, way.nodes, way_length, way.tags))
         for id, osm_node in osm_graph.nodes.items():
             nodes[id] = Node(osm_node.id, osm_node.lat, osm_node.lon)
         return cls(nodes, edges)
