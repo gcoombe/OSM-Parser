@@ -43,6 +43,13 @@ class Graph(object):
             result.append((node.lat, node.lon))
         return result
 
+    def head_tail_nodes(self):
+        result = []
+        for edge in self.edges:
+            result.append(edge.nodes[0])
+            result.append(edge.nodes[-1])
+        return result
+
 def calculate_distance_between_coordinates(coordinate1, coordinate2):
         """
         Calculate the great circle distance between two points

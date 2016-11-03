@@ -93,3 +93,9 @@ class TestOSMGraph(unittest.TestCase):
         nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949), Node(3, 50.1, -124.1)]
         edge =  Edge(1, nodes, 1)
         self.assertTrue(edge.contains_segment({"lat": nodes[0].lat, "lon": nodes[0].lon}, {"lat": nodes[2].lat, "lon": nodes[2].lon}, head_to_tail=True))
+
+    def test_edge_head_tail_list(self):
+        nodes = [Node(1, 49.278653, -123.121905), Node(2, 49.285309, -123.111949), Node(3, 50.1, -124.1)]
+        edge =  Edge(1, nodes, 1)
+        graph = Graph(nodes, [edge])
+        self.assertCountEqual(graph.head_tail_nodes(), [nodes[0], nodes[-1]])
